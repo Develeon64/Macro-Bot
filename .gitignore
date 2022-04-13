@@ -1,3 +1,5 @@
 .vscode/*
 !.vscode/extensions.json
-var/token.json
+var/*
+var/conf/*
+var/db/*

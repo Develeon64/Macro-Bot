@@ -27,7 +27,7 @@ export class DiscordBot extends Client {
 	private async onMessageCreate (message: Message): Promise<void> {
 		const authorRoles = await message.member?.roles.collection();
 
-		if (!authorRoles?.has("963570325939945565") && message.content.toLowerCase().includes("@everyone")) {
+		if (!authorRoles?.has(JSON.parse(Deno.readTextFileSync("var/conf/config.json")).modRole) && message.content.toLowerCase().includes("@everyone")) {
 			message.delete();
 		}
 	}
@@ -56,7 +56,7 @@ export class DiscordBot extends Client {
 		embed.addField("__Joined__", `${this.formatDate(new Date(member.joinedAt), true)}\n\n${this.formatDate(new Date(member.joinedAt), false)}`, false);
 		embed.addField("__Created__", `${this.formatDate(member.user.timestamp, true)}\n\n${this.formatDate(member.user.timestamp, false)}`, true);
 
-		((await this.channels.collection()).get("963557777584832522") as TextChannel).send(embed);
+		((await this.channels.collection()).get(JSON.parse(Deno.readTextFileSync("var/conf/config.json")).screenChannel) as TextChannel).send(embed);
 	}
 
 	private formatDate (date: Date, utc = true): string {
