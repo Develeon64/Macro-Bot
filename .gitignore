@@ -1,6 +1,11 @@
 .vscode/*
 !.vscode/extensions.json
+
+scripts/compile*
+
 dist/*
+logs/*
+
 var/*
 var/conf/*
 var/db/*

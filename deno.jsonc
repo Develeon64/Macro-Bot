@@ -1,0 +1,25 @@
+{
+  "$schema": "https://deno.land/x/deno/cli/schemas/config-file.v1.json",
+  "lint": {
+    "files": {
+      "include": ["src/"]
+    },
+    "rules": {
+      "tags": ["recommended"],
+      "exclude": [
+        "camelcase",
+        "no-explicit-any",
+        "no-unused-vars",
+        "no-inferrable-types"
+      ]
+    }
+  },
+  "fmt": {
+    "options": {
+      "indentWidth": 1,
+      "lineWidth": 120,
+      "singleQuote": false,
+      "useTabs": true
+    }
+  }
+}
