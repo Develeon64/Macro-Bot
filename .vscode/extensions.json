@@ -1,0 +1,11 @@
+{
+  "recommendations": [
+    "denoland.vscode-deno",
+    "editorconfig.editorconfig"
+  ],
+  "unwantedRecommendations": [
+    "ameerthehacker.deno-vscode",
+    "axetroy.vscode-deno",
+    "justjavac.vscode-deno"
+  ]
+}

@@ -1,0 +1,5 @@
+.vscode/*
+!.vscode/extensions.json
+var/*
+var/conf/*
+var/db/*
