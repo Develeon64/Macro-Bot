@@ -88,7 +88,6 @@ export class DiscordBot extends Client {
 
 		const channelNames = channel.name.split("_");
 		if (channelNames.length > 1) channelNames.pop();
-		console.log(channelNames.join("_"))
 
 		channel.setName(`${channelNames.join("_")}_${count}`);
 		this.logger.info(`Users on the server: ${count}`);
