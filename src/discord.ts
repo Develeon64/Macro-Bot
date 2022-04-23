@@ -82,7 +82,7 @@ export class DiscordBot extends Client {
 		const channel = ((await this.channels.collection()).get(JSON.parse(Deno.readTextFileSync("var/conf/config.json")).screenChannel) as GuildTextChannel);
 		let count = 0;
 		for (const member of await channel.guild.members.array()) {
-			if (member.user.bot !== undefined && member.user.bot !== null && member.user.bot !== false)
+			if (member.user.bot !== undefined && member.user.bot !== null && member.user.bot === false)
 			count++;
 		}
 
