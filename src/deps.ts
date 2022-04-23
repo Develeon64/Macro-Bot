@@ -7,10 +7,11 @@ export {
 	Intents,
 	Member,
 	Message,
-	TextChannel,
 } from "https://deno.land/x/harmony@v2.6.0/mod.ts";
 export type {
 	ClientOptions,
+	EmbedPayload,
+	User,
 } from "https://deno.land/x/harmony@v2.6.0/mod.ts";
 
 export * as log from "https://deno.land/std@0.134.0/log/mod.ts";
