@@ -33,7 +33,7 @@ export class DiscordBot extends Client {
 	@event("ready")
 	private async onReady (shard: number): Promise<void> {
 		DiscordBot.guild = await this.guilds.fetch(JSON.parse(Deno.readTextFileSync("var/conf/config.json")).guild);
-		this.logger.info(`Bot is connected on shard ${shard}, ready and fully functional!`)
+		this.logger.info(`Bot is connected on shard ${shard}, ready and fully functional!`);
 		this.updateMemberCount();
 	}
 
