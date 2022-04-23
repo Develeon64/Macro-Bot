@@ -75,12 +75,16 @@ export class DiscordBot extends Client {
 
 		((await this.channels.collection()).get(JSON.parse(Deno.readTextFileSync("var/conf/config.json")).screenChannel) as GuildTextChannel).send(embed.title, embed);
 		this.logger.info(join ? `Member ${member.user.tag} (${member.id}) joined the server!` : `Member ${member.user.tag} (${member.id}) left the server!`);
-		this.updateMemberCount(memberCount);
+		this.updateMemberCount();
 	}
 
-	private async updateMemberCount (count?: number): Promise<void> {
+	private async updateMemberCount (): Promise<void> {
 		const channel = ((await this.channels.collection()).get(JSON.parse(Deno.readTextFileSync("var/conf/config.json")).screenChannel) as GuildTextChannel);
-		count = count || (await channel.guild.members.array()).length;
+		let count = 0;
+		for (const member of await channel.guild.members.array()) {
+			if (member.user.bot !== undefined && member.user.bot !== null && member.user.bot !== false)
+			count++;
+		}
 
 		const channelNames = channel.name.split("_");
 		if (channelNames.length > 1) channelNames.pop();
