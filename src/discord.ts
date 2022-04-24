@@ -79,6 +79,7 @@ export class DiscordBot extends Client {
 	private async updateMemberCount (): Promise<number> {
 		const channel = ((await this.channels.collection()).get(JSON.parse(Deno.readTextFileSync("var/conf/config.json")).screenChannel) as GuildTextChannel);
 		let count = 0;
+		await channel.guild.chunk({ });
 		await channel.guild.members.fetchList();
 		for (const member of await channel.guild.members.array()) {
 			if (!member.user.bot)
