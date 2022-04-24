@@ -58,14 +58,13 @@ export class DiscordBot extends Client {
 	}
 
 	private async onMemberMovement (member: Member, join: boolean): Promise<void> {
-		const memberCount: number = (await member.guild.members.array()).length;
 		const embed = new DiscordEmbed();
 		embed.setTimestamp(new Date());
 		embed.setColor(join ? Colors.Red : Colors.Yellow);
 		embed.setAuthor({ name: this.user?.username || "", icon_url: this.user?.avatarURL() });
 		embed.setThumbnail({ url: member.avatarURL() });
 		embed.setTitle(`__**${member.user.tag} ${join ? "joined" : "left"} the server!**__`);
-		embed.setDescription(`Latest member count: **${memberCount}**`);
+		embed.setDescription(`Latest member count: **${this.updateMemberCount()}**`);
 
 		//embed.addField("__Username__", member.nick ? `${member.user.tag}\n${member.nick}` : member.user.tag, true);
 		embed.addField("__ID__", member.id, true);
@@ -75,14 +74,14 @@ export class DiscordBot extends Client {
 
 		((await this.channels.collection()).get(JSON.parse(Deno.readTextFileSync("var/conf/config.json")).screenChannel) as GuildTextChannel).send(embed.title, embed);
 		this.logger.info(join ? `Member ${member.user.tag} (${member.id}) joined the server!` : `Member ${member.user.tag} (${member.id}) left the server!`);
-		this.updateMemberCount();
 	}
 
-	private async updateMemberCount (): Promise<void> {
+	private async updateMemberCount (): Promise<number> {
 		const channel = ((await this.channels.collection()).get(JSON.parse(Deno.readTextFileSync("var/conf/config.json")).screenChannel) as GuildTextChannel);
 		let count = 0;
+		await channel.guild.members.fetchList();
 		for (const member of await channel.guild.members.array()) {
-			if (member.user.bot !== undefined && member.user.bot !== null && member.user.bot === false)
+			if (!member.user.bot)
 			count++;
 		}
 
@@ -91,6 +90,8 @@ export class DiscordBot extends Client {
 
 		channel.setName(`${channelNames.join("_")}_${count}`);
 		this.logger.info(`Users on the server: ${count}`);
+
+		return count;
 	}
 
 	private formatDate (date: Date, utc: boolean = true): string {
