@@ -64,7 +64,7 @@ export class DiscordBot extends Client {
 		embed.setAuthor({ name: this.user?.username || "", icon_url: this.user?.avatarURL() });
 		embed.setThumbnail({ url: member.avatarURL() });
 		embed.setTitle(`__**${member.user.tag} ${join ? "joined" : "left"} the server!**__`);
-		embed.setDescription(`Latest member count: **${this.updateMemberCount()}**`);
+		embed.setDescription(`Latest member count: **${await this.updateMemberCount()}**`);
 
 		//embed.addField("__Username__", member.nick ? `${member.user.tag}\n${member.nick}` : member.user.tag, true);
 		embed.addField("__ID__", member.id, true);
@@ -79,8 +79,8 @@ export class DiscordBot extends Client {
 	private async updateMemberCount (): Promise<number> {
 		const channel = ((await this.channels.collection()).get(JSON.parse(Deno.readTextFileSync("var/conf/config.json")).screenChannel) as GuildTextChannel);
 		let count = 0;
-		await channel.guild.chunk({ });
-		await channel.guild.members.fetchList();
+		await channel.guild.chunk({ presences: false }, true);
+		//await channel.guild.members.fetchList();
 		for (const member of await channel.guild.members.array()) {
 			if (!member.user.bot)
 			count++;
