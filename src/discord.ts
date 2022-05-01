@@ -39,11 +39,30 @@ export class DiscordBot extends Client {
 
 	@event("messageCreate")
 	private async onMessageCreate (message: Message): Promise<void> {
-		const authorRoles = await message.member?.roles.collection();
+		if ((await message.member?.roles.collection())?.has(JSON.parse(Deno.readTextFileSync("var/conf/config.json")).modRole) || message.author.bot)
+			return;
 
-		if (!authorRoles?.has(JSON.parse(Deno.readTextFileSync("var/conf/config.json")).modRole) && message.content.toLowerCase().includes("@everyone")) {
+		if (message.content.toLowerCase().includes("@everyone")) {
 			message.delete();
 			this.logger.info(`Message containing @everyone from ${message.author.tag} in ${(message.channel as GuildTextChannel).name} was deleted!`);
+		}
+		else if (JSON.parse(Deno.readTextFileSync("var/conf/config.json")).imageChannels.includes(message.channelID) && !(message.embeds.length > 0 || message.attachments.length > 0)) {
+			message.delete();
+			let dm = false;
+			try {
+				const embed = new DiscordEmbed();
+				embed.setAuthor(message.guild?.name || "", message.guild?.iconURL());
+				embed.setTitle("__Your Post__");
+				embed.setDescription(this.escapeMessage(message.content));
+				await message.author.send(`The channel ${message.channel} is only meant for images.\nHere is your text, so that you don't need to rewrite it to post it into another channel:`, embed);
+				dm = true;
+			}
+			catch {
+				// Do nothing
+			}
+			finally {
+				this.logger.info(`Message without image from ${message.author.tag} in ${(message.channel as GuildTextChannel).name} was deleted! DM with their text ${dm ? "successfull" : "was not"} sent.`);
+			}
 		}
 	}
 
@@ -93,6 +112,10 @@ export class DiscordBot extends Client {
 		this.logger.info(`Users on the server: ${count}`);
 
 		return count;
+	}
+
+	private escapeMessage (text: string): string {
+		return text.replaceAll("<", "\\<").replaceAll("*", "\\*").replaceAll("_", "\\_").replaceAll("`", "\\`").replaceAll(":", "\\:");
 	}
 
 	private formatDate (date: Date, utc: boolean = true): string {
