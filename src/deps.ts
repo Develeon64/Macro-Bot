@@ -14,18 +14,18 @@ export type {
 	User,
 } from "https://deno.land/x/harmony@v2.6.0/mod.ts";
 
-export * as log from "https://deno.land/std@0.134.0/log/mod.ts";
+export * as log from "https://deno.land/std@0.148.0/log/mod.ts";
 export {
 	LogLevels,
-} from "https://deno.land/std@0.134.0/log/mod.ts";
+} from "https://deno.land/std@0.148.0/log/mod.ts";
 export type {
 	LogRecord,
-} from "https://deno.land/std@0.134.0/log/logger.ts";
+} from "https://deno.land/std@0.148.0/log/logger.ts";
 export {
 	BaseHandler,
 	ConsoleHandler,
 	FileHandler,
-} from "https://deno.land/std@0.134.0/log/handlers.ts";
+} from "https://deno.land/std@0.148.0/log/handlers.ts";
 export {
 	black,
 	bold,
@@ -35,4 +35,4 @@ export {
 	brightYellow,
 	inverse,
 	red,
-} from "https://deno.land/std@0.134.0/fmt/colors.ts";
+} from "https://deno.land/std@0.148.0/fmt/colors.ts";
